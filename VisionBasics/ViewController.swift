@@ -37,9 +37,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Tapping the image view brings up the photo picker.
         let photoTap = UITapGestureRecognizer(target: self, action: #selector(promptPhoto))
         self.view.addGestureRecognizer(photoTap)
-        
-        // Prompt user for a photo shortly after launch
-        perform(#selector(promptPhoto), with: nil, afterDelay: 0.1)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -162,6 +159,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             bounds.size.height = bounds.size.width
             bounds.size.width = boundsHeight
             transform = CGAffineTransform(scaleX: -1, y: 1).rotated(by: .pi / 2.0)
+        default:
+            transform = .identity
         }
         
         return UIGraphicsImageRenderer(size: bounds.size).image { rendererContext in

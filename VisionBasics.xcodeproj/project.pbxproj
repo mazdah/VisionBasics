@@ -17,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		177A64375EDEE7E4932FD7AE /* SampleCode.xcconfig */ = {isa = PBXFileReference; name = SampleCode.xcconfig; path = Configuration/SampleCode.xcconfig; sourceTree = "<group>"; };
 		285695282065D52E00EF208C /* VisionBasics.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisionBasics.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2856952B2065D52F00EF208C /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2856952D2065D52F00EF208C /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -26,8 +27,7 @@
 		285695372065D52F00EF208C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		288FF80D206DB2BC000932BA /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		28BD25A7208EA804005FA3FB /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
-		72E5679072E5318000000001 /* SampleCode.xcconfig */ = {isa = PBXFileReference; name = SampleCode.xcconfig; path = Configuration/SampleCode.xcconfig; sourceTree = "<group>"; };
-		748EDA10748EDB2000000001 /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE.txt; sourceTree = "<group>"; };
+		F6F4FAA1D02B495029E9667C /* LICENSE.txt */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -47,8 +47,8 @@
 				288FF80D206DB2BC000932BA /* README.md */,
 				2856952A2065D52E00EF208C /* VisionBasics */,
 				285695292065D52E00EF208C /* Products */,
-				72E5077072E5090000000001 /* Configuration */,
-				748ECC60748EC46000000001 /* LICENSE */,
+				4D36693FE6EA6BB7BDF7131F /* Configuration */,
+				E8B8E7B7C8E4561E32D7DB9C /* LICENSE */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,18 +74,18 @@
 			path = VisionBasics;
 			sourceTree = "<group>";
 		};
-		72E5077072E5090000000001 /* Configuration */ = {
+		4D36693FE6EA6BB7BDF7131F /* Configuration */ = {
 			isa = PBXGroup;
 			children = (
-				72E5679072E5318000000001 /* SampleCode.xcconfig */,
+				177A64375EDEE7E4932FD7AE /* SampleCode.xcconfig */,
 			);
 			name = Configuration;
 			sourceTree = "<group>";
 		};
-		748ECC60748EC46000000001 /* LICENSE */ = {
+		E8B8E7B7C8E4561E32D7DB9C /* LICENSE */ = {
 			isa = PBXGroup;
 			children = (
-				748EDA10748EDB2000000001 /* LICENSE.txt */,
+				F6F4FAA1D02B495029E9667C /* LICENSE.txt */,
 			);
 			name = LICENSE;
 			path = LICENSE;
@@ -101,7 +101,6 @@
 				285695242065D52E00EF208C /* Sources */,
 				285695252065D52E00EF208C /* Frameworks */,
 				285695262065D52E00EF208C /* Resources */,
-				287C544F2069989800969742,
 			);
 			buildRules = (
 			);
@@ -124,7 +123,7 @@
 				TargetAttributes = {
 					285695272065D52E00EF208C = {
 						CreatedOnToolsVersion = 9.2;
-						LastSwiftMigration = 1000;
+						LastSwiftMigration = 1140;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -196,7 +195,7 @@
 /* Begin XCBuildConfiguration section */
 		285695382065D52F00EF208C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72E5679072E5318000000001 /* SampleCode.xcconfig */;
+			baseConfigurationReference = 177A64375EDEE7E4932FD7AE /* SampleCode.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -256,7 +255,7 @@
 		};
 		285695392065D52F00EF208C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72E5679072E5318000000001 /* SampleCode.xcconfig */;
+			baseConfigurationReference = 177A64375EDEE7E4932FD7AE /* SampleCode.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -309,7 +308,7 @@
 		};
 		2856953B2065D52F00EF208C /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72E5679072E5318000000001 /* SampleCode.xcconfig */;
+			baseConfigurationReference = 177A64375EDEE7E4932FD7AE /* SampleCode.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -319,14 +318,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.VisionBasics${SAMPLE_CODE_DISAMBIGUATOR}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
 		2856953C2065D52F00EF208C /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 72E5679072E5318000000001 /* SampleCode.xcconfig */;
+			baseConfigurationReference = 177A64375EDEE7E4932FD7AE /* SampleCode.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -336,7 +335,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.example.apple-samplecode.VisionBasics${SAMPLE_CODE_DISAMBIGUATOR}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
