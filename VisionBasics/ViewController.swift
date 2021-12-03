@@ -25,6 +25,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // Image parameters for reuse throughout app
     var imageWidth: CGFloat = 0
     var imageHeight: CGFloat = 0
+
+    var croppedImage: UIImage?
     
     // Background is black, so display status bar in white.
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -234,7 +236,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         // Place photo inside imageView.
         imageView.image = correctedImage
-        
+        croppedImage = correctedImage
         // Transform image to fit screen.
         guard let cgImage = correctedImage.cgImage else {
             print("Trying to show an image not backed by CGImage!")
@@ -401,9 +403,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     lazy var rectangleDetectionRequest: VNDetectRectanglesRequest = {
         let rectDetectRequest = VNDetectRectanglesRequest(completionHandler: self.handleDetectedRectangles)
         // Customize & configure the request to detect only certain rectangles.
-        rectDetectRequest.maximumObservations = 8 // Vision currently supports up to 16.
-        rectDetectRequest.minimumConfidence = 0.6 // Be confident.
-        rectDetectRequest.minimumAspectRatio = 0.3 // height / width
+        rectDetectRequest.maximumObservations = 1 // Vision currently supports up to 16.
+        rectDetectRequest.minimumConfidence = 0.7 // Be confident.
+        rectDetectRequest.minimumAspectRatio = 0.2 // height / width
         return rectDetectRequest
     }()
     
@@ -476,13 +478,39 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         for observation in rectangles {
             let rectBox = boundingBox(forRegionOfInterest: observation.boundingBox, withinImageBounds: bounds)
             let rectLayer = shapeLayer(color: .blue, frame: rectBox)
-            
+            print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ \(bounds)")
+            print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ \(rectBox)")
             // Add to pathLayer on top of image.
             pathLayer?.addSublayer(rectLayer)
+
+            saveCroppedImage(area: rectBox)
         }
         CATransaction.commit()
     }
-    
+
+    func saveCroppedImage(area: CGRect) {
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ \(imageView.image)")
+        let ciImage: CIImage = CIImage(image: croppedImage ?? UIImage()) ?? CIImage()
+        let crop = ciImage.cropped(to: area)
+//        let uiImage = UIImage(ciImage: crop)
+
+        imageView.image = UIImage(ciImage: crop)
+//        UIImageWriteToSavedPhotosAlbum(
+//                uiImage,
+//                self,
+//                #selector(image(_:didFinishSavingWithError:contextInfo:)),
+//                nil)
+    }
+
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
+        // After Saving
+        if let error = error { // error
+            print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ " + error.localizedDescription)
+        } else { // save
+            print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ Image Saved")
+        }
+    }
+
     // Faces are YELLOW.
     /// - Tag: DrawBoundingBox
     fileprivate func draw(faces: [VNFaceObservation], onImageWithBounds bounds: CGRect) {
