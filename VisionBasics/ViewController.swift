@@ -26,7 +26,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     var imageWidth: CGFloat = 0
     var imageHeight: CGFloat = 0
 
-    var croppedImage: UIImage?
+    // CROP : 크롭하기 위해 원본 이미지를 저장하는 변수
+    var croppedImage: UIImage!
     
     // Background is black, so display status bar in white.
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -236,6 +237,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         // Place photo inside imageView.
         imageView.image = correctedImage
+
+        // CROP : 크롭을 위해 원본 이미지를 전역 변수에 저장
         croppedImage = correctedImage
         // Transform image to fit screen.
         guard let cgImage = correctedImage.cgImage else {
@@ -483,18 +486,27 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             // Add to pathLayer on top of image.
             pathLayer?.addSublayer(rectLayer)
 
+            // CROP : 사각형 영역을 감지하는 시점에 이미지를 감지한 영역만큼 크롭하는 함수 호출. 파라미터는 감지한 영역의 CGRect 값
             saveCroppedImage(area: rectBox)
         }
         CATransaction.commit()
     }
 
+    // CROP : 이미지를 크롭하는 함수. 아직 이미지 뷰와 이미지 사이의 좌표 비율 보정은 안된 상태
     func saveCroppedImage(area: CGRect) {
         print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ \(imageView.image)")
-        let ciImage: CIImage = CIImage(image: croppedImage ?? UIImage()) ?? CIImage()
-        let crop = ciImage.cropped(to: area)
-//        let uiImage = UIImage(ciImage: crop)
+        let scale = croppedImage.imageRendererFormat.scale + 1.0
+        let imgRect = CGRect(x: area.origin.x, y: area.origin.y, width: area.size.width * scale, height: area.size.height * scale)
 
-        imageView.image = UIImage(ciImage: crop)
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ scale = \(scale)")
+        //let ciImage: CIImage = CIImage(image: croppedImage ?? UIImage()) ?? CIImage()
+        let crop: CGImage = croppedImage.cgImage!
+
+
+        let croppedCgImage = crop.cropping(to: imgRect)!
+
+        imageView.image = UIImage(cgImage: croppedCgImage, scale: scale, orientation: croppedImage.imageOrientation)
+        //imageView.image = UIImage(cgImage: croppedCgImage, scale: croppedImage.imageRendererFormat.scale, orientation: croppedImage.imageOrientation)
 //        UIImageWriteToSavedPhotosAlbum(
 //                uiImage,
 //                self,
