@@ -207,7 +207,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
                                         didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         // Extract chosen image.
         let originalImage: UIImage = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
-        
+
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ originalImage.size.width = \(originalImage.size.width) : originalImage.size.height = \(originalImage.size.height)")
         // Display image on screen.
         show(originalImage)
         
@@ -239,7 +240,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imageView.image = correctedImage
 
         // CROP : 크롭을 위해 원본 이미지를 전역 변수에 저장
-        croppedImage = correctedImage
+        croppedImage = image
         // Transform image to fit screen.
         guard let cgImage = correctedImage.cgImage else {
             print("Trying to show an image not backed by CGImage!")
@@ -259,7 +260,9 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Cache image dimensions to reference when drawing CALayer paths.
         imageWidth = fullImageWidth / scaleDownRatio
         imageHeight = fullImageHeight / scaleDownRatio
-        
+
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ fullImageWidth = \(fullImageWidth) : imageWidth = \(imageWidth) : widthRatio = \(widthRatio)")
+
         // Prepare pathLayer to hold Vision results.
         let xLayer = (imageFrame.width - imageWidth) / 2
         let yLayer = imageView.frame.minY + (imageFrame.height - imageHeight) / 2
@@ -479,10 +482,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     fileprivate func draw(rectangles: [VNRectangleObservation], onImageWithBounds bounds: CGRect) {
         CATransaction.begin()
         for observation in rectangles {
-            let rectBox = boundingBox(forRegionOfInterest: observation.boundingBox, withinImageBounds: bounds)
+            var rectBox = boundingBox(forRegionOfInterest: observation.boundingBox, withinImageBounds: bounds)
             let rectLayer = shapeLayer(color: .blue, frame: rectBox)
-            print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ \(bounds)")
-            print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ \(rectBox)")
+            print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ bounds = \(bounds)")
+            print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ rectBox = \(rectBox)")
+            print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ rectLayer.bounds.origin.y = \(rectLayer.bounds.origin.y)")
             // Add to pathLayer on top of image.
             pathLayer?.addSublayer(rectLayer)
 
@@ -493,19 +497,33 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
 
     // CROP : 이미지를 크롭하는 함수. 아직 이미지 뷰와 이미지 사이의 좌표 비율 보정은 안된 상태
-    func saveCroppedImage(area: CGRect) {
+    func saveCroppedImage(area: CGRect) -> UIImage? {
         print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ \(imageView.image)")
-        let scale = croppedImage.imageRendererFormat.scale + 1.0
-        let imgRect = CGRect(x: area.origin.x, y: area.origin.y, width: area.size.width * scale, height: area.size.height * scale)
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ croppedImage.size.width = \(croppedImage.size.width) : imageView.bounds.width = \(imageView.bounds.width)")
+        let imageViewScale = max(croppedImage.size.width / imageView.bounds.width, croppedImage.size.height / imageView.bounds.height)
 
-        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ scale = \(scale)")
+        let imgRect = CGRect(x: area.origin.x * imageViewScale,
+                y: area.origin.y * imageViewScale,
+                width: area.size.width * imageViewScale,
+                height: area.size.height *  imageViewScale)
+
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ scale = \(imageViewScale)")
         //let ciImage: CIImage = CIImage(image: croppedImage ?? UIImage()) ?? CIImage()
-        let crop: CGImage = croppedImage.cgImage!
+        //print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ crop.width = \(imgRect.width) : crop.hegiht = \(crop.height)")
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ imgRect = \(imgRect)")
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ croppedImage.cgImage?.width = \(croppedImage.cgImage?.width) : croppedImage.cgImage?.height = \(croppedImage.cgImage?.height)")
+        guard let croppedCgImage = croppedImage.cgImage?.cropping(to: imgRect)
+        else {
+            print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ croppedCgImage is nil")
+            return nil
+        }
 
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ croppedCgImage = \(croppedCgImage)")
+        let resultImage: UIImage =  UIImage(cgImage: croppedCgImage)
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ resultImage = \(resultImage)")
+        imageView.image = resultImage
 
-        let croppedCgImage = crop.cropping(to: imgRect)!
-
-        imageView.image = UIImage(cgImage: croppedCgImage, scale: scale, orientation: croppedImage.imageOrientation)
+        return resultImage
         //imageView.image = UIImage(cgImage: croppedCgImage, scale: croppedImage.imageRendererFormat.scale, orientation: croppedImage.imageOrientation)
 //        UIImageWriteToSavedPhotosAlbum(
 //                uiImage,
