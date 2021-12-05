@@ -487,6 +487,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ bounds = \(bounds)")
             print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ rectBox = \(rectBox)")
             print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ rectLayer.bounds.origin.y = \(rectLayer.bounds.origin.y)")
+            print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ imageView = \(imageView.bounds.origin.x), \(imageView.bounds.origin.y), \(imageView.frame.width), \(imageView.frame.height)")
             // Add to pathLayer on top of image.
             pathLayer?.addSublayer(rectLayer)
 
@@ -499,7 +500,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     // CROP : 이미지를 크롭하는 함수. 아직 이미지 뷰와 이미지 사이의 좌표 비율 보정은 안된 상태
     func saveCroppedImage(area: CGRect) -> UIImage? {
         print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ \(imageView.image)")
-        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ croppedImage.size.width = \(croppedImage.size.width) : imageView.bounds.width = \(imageView.bounds.width)")
+
+        print("⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐️⭐ croppedImage.size.width = \(croppedImage.size.width) : imageView.bounds.width = \(imageView.bounds.width) : pathLayer?.bounds.width = \(pathLayer?.bounds.width)")
         let imageViewScale = max(croppedImage.size.width / imageView.bounds.width, croppedImage.size.height / imageView.bounds.height)
 
         let imgRect = CGRect(x: area.origin.x * imageViewScale,
